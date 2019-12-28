@@ -38,7 +38,7 @@ public class FileSystem {
 
         Tree workingTree = fileSystemTree;
 
-        if (name[0] != "root" || (FileExists(name) != null)) {
+        if (!name[0].equals("root") || (FileExists(name) != null)) {
 
             throw new BadFileNameException();
 
@@ -104,7 +104,7 @@ public class FileSystem {
         Tree workingTree = fileSystemTree;
         String fileName = name[name.length - 1];
 
-        if (name[0] != "root") {
+        if (!name[0].equals("root")) {
 
             throw new BadFileNameException();
 
@@ -118,7 +118,7 @@ public class FileSystem {
 
                 throw new OutOfSpaceException();
 
-            } else if (k <= (FileSystem.fileStorage.countFreeSpace() - file.allocations.length)) { //if there will be enough space free after deleting the old file, do it
+            } else if (k <= (FileSystem.fileStorage.countFreeSpace() + file.allocations.length)) { //if there will be enough space free after deleting the old file, do it
 
                 rmfile(name);
 
@@ -136,7 +136,7 @@ public class FileSystem {
         //will now be at same level as file, contained in workingTree
         if (workingTree.children.containsKey(fileName)) { //file exists, remove (reached this point, so file can fit)
 
-            if (workingTree.children.get(fileName).getClass().getName() == "system.Tree") { //name of existing directory
+            if (workingTree.children.get(fileName).getClass().getName().equals("system.Tree")) { //name of existing directory
 
                 throw new BadFileNameException();
 
@@ -257,7 +257,7 @@ public class FileSystem {
 
         Node found = PathExists(name);
 
-        if (found == null || found.getClass().getName() == "system.Node") {
+        if (found == null || found.getClass().getName().equals("system.Node")) {
 
             return null;
 
@@ -276,7 +276,7 @@ public class FileSystem {
 
         Node found = PathExists(name);
 
-        if (found == null || found.getClass().getName() == "system.Leaf") {
+        if (found == null || found.getClass().getName().equals("system.Leaf")) {
 
             return null;
 
