@@ -20,6 +20,19 @@ public class FileSystemTest {
     }
 
     @Test
+    public void testFileSystemConstructor(){
+        //checks if the file system is not null
+        assertTrue(fileSystem != null);
+    }
+
+    @Test
+    public void testSpaceOnFileSystem(){
+        //checks if the space inside the file system is not null
+        assertTrue(fileSystem.fileStorage!=null);
+    }
+
+
+    @Test
     public void testCreateDirWithNoRoot() {
 
     }
