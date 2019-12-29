@@ -10,18 +10,8 @@ public class TreeTest {
 
     @Before
     public void initConstructorCheck(){
-
         String emptyString = "";
     }
-
-    @Test
-    public void invalidConstructor(){
-        String emptyString = "";
-        Tree tree = new Tree(emptyString);
-        assertNull(tree);
-    }
-
-
 
     @Before
     public void initTree(){

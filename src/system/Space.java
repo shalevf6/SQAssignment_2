@@ -34,17 +34,20 @@ public class Space {
      * @throws OutOfSpaceException
      */
     public void Alloc(int size, Leaf file) throws OutOfSpaceException {
+        try {
+            file.allocations = new int[size];
 
-        file.allocations = new int[size];
+            //we reached this point, therefore there is enough free space
+            for (int i = 0; i < size; i++) {
 
-        //we reached this point, therefore there is enough free space
-        for (int i = 0; i < size; i++) {
+                file.allocations[i] = freeBlocks.poll();
+                blocks[file.allocations[i]] = file;
 
-            file.allocations[i] = freeBlocks.poll();
-            blocks[file.allocations[i]] = file;
-
+            }
         }
-
+        catch (NullPointerException e) {
+            throw new OutOfSpaceException();
+        }
     }
 
     /**

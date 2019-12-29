@@ -89,14 +89,9 @@ public class SpaceTest {
         assertEquals(spaceSize, emptyBlocks);
     }
 
-    @Test
-    public void testOutOfSpaceExceptionWithLargeFile() {
-        try {
-            Leaf bigFile = new Leaf("file2", 100);
-            fail("Expected \"OutOfSpaceException\"");
-        }
-        catch (NullPointerException | OutOfSpaceException e) {
-            // Test passes because exception passed
-        }
+    @Test(expected = OutOfSpaceException.class)
+    public void testOutOfSpaceExceptionWithLargeFile() throws OutOfSpaceException {
+        Leaf bigFile = new Leaf("file2", 100);
+        fail("Expected \"OutOfSpaceException\"");
     }
 }
