@@ -394,7 +394,6 @@ public class FileSystemTest {
     }
 
     @Test
-
     public void fileExistsWithFilePath() throws BadFileNameException, OutOfSpaceException {
         String first, seconed, third;
         first = "root";
@@ -411,7 +410,8 @@ public class FileSystemTest {
         fileSystem.file(toInsert2, 2);
         //check if with good path, the file system will not return null, because that the path is valid
         assertTrue(fileSystem.FileExists(toInsert2) != null);
-
+    }
+    @Test
     public void testDirExists() {
         try {
             String[] dirPath = new String[]{"root", "dir1"};

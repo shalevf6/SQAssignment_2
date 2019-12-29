@@ -7,7 +7,7 @@ public abstract class Node {
     /** Every node must have a parent. For \c root this will be null */
     public Tree parent;
     /** Store the depth */
-    int depth = 0;
+     int depth = 0;
 
     /**
      * Get the path to the current node
