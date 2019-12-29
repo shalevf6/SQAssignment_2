@@ -2,7 +2,6 @@ package system;
 
 import org.junit.Before;
 import org.junit.Test;
-
 import static org.junit.Assert.*;
 
 public class NodeTest {
@@ -16,8 +15,6 @@ public class NodeTest {
         catch (Exception e ){
             fail(e.getMessage());
         }
-
-
     }
 
     @Test
@@ -28,9 +25,8 @@ public class NodeTest {
         Tree tree = new Tree(root);
         Tree first = tree.GetChildByName(second);
         Tree secondTree = first.GetChildByName(third);
-        String[] path = secondTree.getPath();
-        assertTrue(secondTree.getPath()[0].equals("root") && secondTree.getPath()[1].equals("mail") && secondTree.getPath()[2].equals("java"));
-
-
+        String[] secondTreePath = secondTree.getPath();
+        assertTrue(secondTreePath[0].equals("root") && secondTreePath[1].equals("mail")
+                && secondTreePath[2].equals("java"));
     }
 }
