@@ -2,10 +2,8 @@ package system;
 
 import org.junit.Before;
 import org.junit.Test;
-
 import java.nio.file.DirectoryNotEmptyException;
 import java.util.Random;
-
 import static org.junit.Assert.*;
 
 public class FileSystemTest {
@@ -24,13 +22,13 @@ public class FileSystemTest {
     @Test
     public void testFileSystemConstructor(){
         //checks if the file system is not null
-        assertTrue(fileSystem != null);
+        assertNotNull(fileSystem);
     }
 
     @Test
     public void testSpaceOnFileSystem(){
         //checks if the space inside the file system is not null
-        assertTrue(fileSystem.fileStorage!=null);
+        assertNotNull(FileSystem.fileStorage);
     }
 
     @Test
@@ -97,16 +95,18 @@ public class FileSystemTest {
     @Test
     public void disk() {
         //checks if the free space in the file system is in the same space that allocated to the file system
-        assertTrue(fileSystem.fileStorage.getAlloc().length==fileSystemSize);
+        assertEquals(FileSystem.fileStorage.getAlloc().length, fileSystemSize);
 
     }
     @Test
     public void checkLeafsOnDisk(){
         boolean toCheckIfNull = true;
-        Leaf[] leaf = fileSystem.fileStorage.getAlloc();
+        Leaf[] leaf = FileSystem.fileStorage.getAlloc();
         for( int i = 0 ; i < leaf.length ; i++){
-            if( leaf[i] != null)
+            if (leaf[i] != null) {
                 toCheckIfNull = false;
+                break;
+            }
         }
         //if all leafs are null, the creation of the disk work as should be
         assertTrue(toCheckIfNull);
@@ -117,11 +117,13 @@ public class FileSystemTest {
         file[0] = "root";
         file[1] = "idan";
         fileSystem.file(file,2);
-        Leaf[] leaf = fileSystem.fileStorage.getAlloc();
+        Leaf[] leaf = FileSystem.fileStorage.getAlloc();
         boolean isFileAllocated = false;
         for (int i = 0 ; i < leaf.length ; i++ ){
-            if( leaf[i]!= null && leaf[i].name.equals("idan"))
+            if (leaf[i] != null && leaf[i].name.equals("idan")) {
                 isFileAllocated = true;
+                break;
+            }
         }
         //if the file name that inserted is allocated in the file system, return true
         assertTrue(isFileAllocated);
@@ -214,12 +216,65 @@ public class FileSystemTest {
     }
 
     @Test
-    public void nullLsdir() {
+    public void testReplaceExistentFileWithLessMemoryThatDoesntFit() {
+        try {
+            String[] filepath = new String[]{"root", "file1"};
+            fileSystem.file(filepath, fileSystemSize);
 
+            // check if file1 was created under root and no storage left
+            String[] ls = fileSystem.lsdir(new String[]{"root"});
+            assertEquals("file1", ls[0]);
+            assertEquals(1, ls.length);
+            assertEquals(0, FileSystem.fileStorage.countFreeSpace());
+
+            fileSystem.file(filepath, fileSystemSize - 1);
+
+            // check if file1 was created under root and one block of storage left
+            ls = fileSystem.lsdir(new String[]{"root"});
+            assertEquals("file1", ls[0]);
+            assertEquals(1, ls.length);
+            assertEquals(1, FileSystem.fileStorage.countFreeSpace());
+        }
+        catch (Exception e) {
+            fail(e.getMessage());
+        }
+    }
+
+    @Test
+    public void testReplaceExistentFileWithLessMemoryThatDoesFit() {
+        try {
+            String[] filepath = new String[]{"root", "file1"};
+            fileSystem.file(filepath, fileSystemSize / 2 + 1);
+
+            // check if file1 was created under root and half of the storage is left
+            String[] ls = fileSystem.lsdir(new String[]{"root"});
+            assertEquals("file1", ls[0]);
+            assertEquals(1, ls.length);
+            int freeSpace = FileSystem.fileStorage.countFreeSpace();
+            int expectedFreeSpace = fileSystemSize - (fileSystemSize / 2 + 1);
+            assertEquals(expectedFreeSpace, freeSpace);
+
+            fileSystem.file(filepath, fileSystemSize / 2 - 1);
+
+            // check if file1 was created under root and one block of storage minus 1 is left
+            ls = fileSystem.lsdir(new String[]{"root"});
+            assertEquals("file1", ls[0]);
+            assertEquals(1, ls.length);
+            freeSpace = FileSystem.fileStorage.countFreeSpace();
+            expectedFreeSpace = fileSystemSize - (fileSystemSize / 2 - 1);
+            assertEquals(expectedFreeSpace, freeSpace);
+        }
+        catch (Exception e) {
+            fail(e.getMessage());
+        }
+    }
+
+    @Test
+    public void nullLsdir() {
         String[] toInsert =  new String[1];
         toInsert[0] = "mailBox";
         // inserting string array that doesn't appear in the file system, should return null
-        assertTrue(fileSystem.lsdir(toInsert)==null);
+        assertNull(fileSystem.lsdir(toInsert));
     }
 
     @Test
@@ -251,9 +306,7 @@ public class FileSystemTest {
         fileSystem.file(toInsert3,3);
         boolean checkDirs = true;
         String[] check = fileSystem.lsdir(toInsert2);
-        if(check[0].equals("idan") && check[1].equals("shani") )
-            checkDirs = true;
-        else
+        if(!(check[0].equals("idan") && check[1].equals("shani")))
             checkDirs = false;
         //if the  string array returned as mentioned checkDirs should be true
         assertTrue(checkDirs);
@@ -290,6 +343,7 @@ public class FileSystemTest {
         //expected to get directory not null exception
         fileSystem.rmdir(toInsert2);
     }
+
     @Test
     public void rmdirGoodInputCheck() throws BadFileNameException, DirectoryNotEmptyException {
         String first,seconed,third;
@@ -309,7 +363,7 @@ public class FileSystemTest {
         fileSystem.rmdir(toInsert2);
         Tree tree = fileSystem.DirExists(toInsert2 );
         //checks if the dir is not in the file system after the rm action
-        assertTrue(tree ==null);
+        assertNull(tree);
     }
 
     @Test
@@ -371,11 +425,11 @@ public class FileSystemTest {
         fileSystem.dir(toInsert);
         fileSystem.dir(toInsert2);
         //check if with bad path, the file system will return null, because that the file is not exist
-        assertTrue(fileSystem.FileExists(toInsert3)==null);
+        assertNull(fileSystem.FileExists(toInsert3));
     }
 
     @Test
-    public void fileExistsWithDirPath() throws BadFileNameException, OutOfSpaceException {
+    public void fileExistsWithDirPath() throws BadFileNameException {
         String first,seconed,third;
         first = "root";
         seconed = "mail";
@@ -390,7 +444,7 @@ public class FileSystemTest {
         fileSystem.dir(toInsert);
         fileSystem.dir(toInsert2);
         //check if with bad path, the file system will return null, because that the path is to a directory and not for a file
-        assertTrue(fileSystem.FileExists(toInsert2)==null);
+        assertNull(fileSystem.FileExists(toInsert2));
     }
 
     @Test
@@ -409,7 +463,7 @@ public class FileSystemTest {
         fileSystem.dir(toInsert);
         fileSystem.file(toInsert2, 2);
         //check if with good path, the file system will not return null, because that the path is valid
-        assertTrue(fileSystem.FileExists(toInsert2) != null);
+        assertNotNull(fileSystem.FileExists(toInsert2));
     }
     @Test
     public void testDirExists() {
@@ -459,8 +513,5 @@ public class FileSystemTest {
         catch (Exception e) {
             fail(e.getMessage());
         }
-
     }
-
-
 }

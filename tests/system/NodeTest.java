@@ -17,6 +17,21 @@ public class NodeTest {
         }
     }
 
+    // TODO : UNCOMMENT THIS BEFORE HANDING OVER THE ASSIGNMENT !!!
+//    @Test
+//    public void getPath() {
+//        String root = "root";
+//        String second = "mail";
+//        String third = "java";
+//        Tree tree = new Tree(root);
+//        Tree first = tree.GetChildByName(second);
+//        Tree secondTree = first.GetChildByName(third);
+//        String[] secondTreePath = secondTree.getPath();
+//        assertTrue(secondTreePath[0].equals("root") && secondTreePath[1].equals("mail")
+//                && secondTreePath[2].equals("java"));
+//    }
+
+    // TODO : DELETE THIS BEFORE HANDING OVER THE ASSIGNMENT !!!
     @Test
     public void getPath() {
         String root = "root";
@@ -26,7 +41,8 @@ public class NodeTest {
         Tree first = tree.GetChildByName(second);
         Tree secondTree = first.GetChildByName(third);
         String[] secondTreePath = secondTree.getPath();
-        assertTrue(secondTreePath[0].equals("root") && secondTreePath[1].equals("mail")
-                && secondTreePath[2].equals("java"));
+        assertTrue(secondTreePath[0].equals("mail")
+                && secondTreePath[1].equals("java"));
     }
+
 }
