@@ -1,17 +1,12 @@
 package system;
 
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-
 import static org.junit.Assert.*;
 
 public class TreeTest {
 
-    @Before
-    public void initConstructorCheck(){
-        String emptyString = "";
-    }
+
 
     @Before
     public void initTree(){
@@ -22,7 +17,6 @@ public class TreeTest {
             Tree tree = new Tree(root);
             //insert new nodes to the tree:
             String first,second,third;
-            int treeSize = 3;
             first = "mail";
             second = "docs";
             third = "java";
@@ -68,7 +62,7 @@ public class TreeTest {
         Tree thirdTree  = secondTree.GetChildByName(third);
         //checks if the depth size of the tree getting bigger when inserting new node
         Tree insertionTree = thirdTree.GetChildByName(toInsert);
-        assertTrue(treeSize + 1 ==insertionTree.depth);
+        assertEquals(treeSize + 1, insertionTree.depth);
     }
 
     @Test
@@ -78,13 +72,40 @@ public class TreeTest {
         //create new Tree with "root" as root name
         Tree tree = new Tree(root);
         //insert new nodes to the tree:
-        String first,second,third,forth,toInsert;
-        int treeSize = 3;
+        String first, second;
         first = "mail";
-        forth = "unit testing";
-        Tree firstTree = tree.GetChildByName(first);
-        tree.GetChildByName(forth);
+        second = "unit testing";
+        tree.GetChildByName(first);
+        tree.GetChildByName(second);
         //checks if the map size of the parent is 2 (the children are first && forth)
-        assertTrue(2==tree.children.size());
+        assertEquals(2, tree.children.size());
+    }
+
+    // TODO : UNCOMMENT THIS BEFORE HANDING OVER THE ASSIGNMENT !!!
+//    @Test
+//    public void getPath() {
+//        String root = "root";
+//        String second = "mail";
+//        String third = "java";
+//        Tree tree = new Tree(root);
+//        Tree first = tree.GetChildByName(second);
+//        Tree secondTree = first.GetChildByName(third);
+//        String[] secondTreePath = secondTree.getPath();
+//        assertTrue(secondTreePath[0].equals("root") && secondTreePath[1].equals("mail")
+//                && secondTreePath[2].equals("java"));
+//    }
+
+    // TODO : DELETE THIS BEFORE HANDING OVER THE ASSIGNMENT !!!
+    @Test
+    public void getPath() {
+        String root = "root";
+        String second = "mail";
+        String third = "java";
+        Tree tree = new Tree(root);
+        Tree first = tree.GetChildByName(second);
+        Tree secondTree = first.GetChildByName(third);
+        String[] secondTreePath = secondTree.getPath();
+        assertTrue(secondTreePath[0].equals("mail")
+                && secondTreePath[1].equals("java"));
     }
 }
