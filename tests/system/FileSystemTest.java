@@ -313,6 +313,17 @@ public class FileSystemTest {
 
     }
 
+    @Test
+    public void testRemoveDirThatDoesntExist() {
+        try {
+            String[] dirPath = new String[]{"root", "dir1"};
+            fileSystem.rmdir(dirPath);
+        }
+        catch (Exception e) {
+            fail(e.getMessage());
+        }
+    }
+
     @Test(expected =   DirectoryNotEmptyException.class)
     public void rmdir() throws DirectoryNotEmptyException, BadFileNameException, OutOfSpaceException {
         String first,seconed,third;
