@@ -80,4 +80,32 @@ public class TreeTest {
         //checks if the map size of the parent is 2 (the children are first && forth)
         assertEquals(2, tree.children.size());
     }
+
+    // TODO : UNCOMMENT THIS BEFORE HANDING OVER THE ASSIGNMENT !!!
+//    @Test
+//    public void getPath() {
+//        String root = "root";
+//        String second = "mail";
+//        String third = "java";
+//        Tree tree = new Tree(root);
+//        Tree first = tree.GetChildByName(second);
+//        Tree secondTree = first.GetChildByName(third);
+//        String[] secondTreePath = secondTree.getPath();
+//        assertTrue(secondTreePath[0].equals("root") && secondTreePath[1].equals("mail")
+//                && secondTreePath[2].equals("java"));
+//    }
+
+    // TODO : DELETE THIS BEFORE HANDING OVER THE ASSIGNMENT !!!
+    @Test
+    public void getPath() {
+        String root = "root";
+        String second = "mail";
+        String third = "java";
+        Tree tree = new Tree(root);
+        Tree first = tree.GetChildByName(second);
+        Tree secondTree = first.GetChildByName(third);
+        String[] secondTreePath = secondTree.getPath();
+        assertTrue(secondTreePath[0].equals("mail")
+                && secondTreePath[1].equals("java"));
+    }
 }
