@@ -92,24 +92,35 @@ public class FileSystemTest {
         }
     }
 
-    @Test
+  @Test
     public void disk() {
-        //checks if the free space in the file system is in the same space that allocated to the file system
-        assertEquals(FileSystem.fileStorage.getAlloc().length, fileSystemSize);
+        String [][] disk = fileSystem.disk();
+        int size = disk.length;
+        boolean checkIfNull = true;
+        for(int i = 0 ; i < size ; i++){
+            if(disk[i]!= null)
+                checkIfNull = false;
+        }
+        //checks if the free space in the disk is in the same space that allocated to the file system && if all disk slots are null
+        assertTrue(checkIfNull && size == fileSystemSize);
 
     }
     @Test
-    public void checkLeafsOnDisk(){
-        boolean toCheckIfNull = true;
-        Leaf[] leaf = FileSystem.fileStorage.getAlloc();
-        for( int i = 0 ; i < leaf.length ; i++){
-            if (leaf[i] != null) {
-                toCheckIfNull = false;
-                break;
+    public void checkLeafsOnDisk() throws OutOfSpaceException, BadFileNameException {
+        String[] file = new String[2];
+        boolean checkIfExist = false;
+        file[0] = "root";
+        file[1] = "idan";
+        fileSystem.file(file,2);
+        String[][] disk = fileSystem.disk();
+        for(int i = 0 ; i< disk.length ; i++){
+            if(disk[i]!=null) {
+                if (disk[i][0].equals("root") && disk[i][1].equals("idan"))
+                    checkIfExist = true;
             }
         }
-        //if all leafs are null, the creation of the disk work as should be
-        assertTrue(toCheckIfNull);
+        //checks if the file path of the file that we inserted is exist in the disk
+        assertTrue(checkIfExist);
     }
     @Test
     public void fileCheck() throws OutOfSpaceException, BadFileNameException {
